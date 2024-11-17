@@ -10,11 +10,11 @@ import java.util.UUID;
 @Entity
 @Table(name="todo_users")
 public class User extends EntityBase{
-    private String username;
     private String email;
     private String name;
     private String lastName;
     private Date bornDate;
+    private String phoneNumber;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> userTasks;
 
@@ -24,28 +24,20 @@ public class User extends EntityBase{
         userTasks = new ArrayList<Task>();
     }
 
-    public User(String username, String email, String name, String lastName, Date bornDate) {
+    public User(String email, String name, String lastName, Date bornDate, String phoneNumber) {
         this();
-        this.username = username;
         this.email = email;
         this.name = name;
         this.lastName = lastName;
         this.bornDate = bornDate;
+        this.phoneNumber = phoneNumber;
     }
 
-    public User(UUID id, String username, String email, String name, String lastName, Date bornDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(UUID id, String email, String name, String lastName, Date bornDate, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(email, name, lastName, bornDate, phoneNumber);
         setId(id);
         setUpdatedAt(updatedAt);
         setCreatedAt(createdAt);
-        this.username = username;
-        this.email = email;
-        this.name = name;
-        this.lastName = lastName;
-        this.bornDate = bornDate;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public String getEmail() {
@@ -66,5 +58,9 @@ public class User extends EntityBase{
 
     public List<Task> getUserTasks() {
         return userTasks;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

@@ -1,24 +1,24 @@
-package com.example.todoapp.application.UseCases.User.CreateUser;
+package com.example.todoapp.application.UseCases.Users.CreateUser;
 import com.example.todoapp.Utils.Mediator.Interfaces.Commands.ICommand;
 import java.util.Date;
 
 public class CreateUserCommand implements ICommand {
-    private String username;
     private String email;
     private String name;
     private String lastName;
     private Date bornDate;
+    private String phoneNumber;
 
-    public CreateUserCommand(String username, String email, String name, String lastName, Date bornDate) {
-        this.username = username;
+    public CreateUserCommand(String email, String name, String lastName, Date bornDate, String phoneNumber) {
         this.email = email;
         this.name = name;
         this.lastName = lastName;
         this.bornDate = bornDate;
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getEmail() {

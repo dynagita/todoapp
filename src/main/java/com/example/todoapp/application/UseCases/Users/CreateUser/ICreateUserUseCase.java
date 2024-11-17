@@ -1,4 +1,4 @@
-package com.example.todoapp.application.UseCases.User.CreateUser;
+package com.example.todoapp.application.UseCases.Users.CreateUser;
 
 import com.example.todoapp.Utils.Mediator.Interfaces.Commands.ICommandHandler;
 import com.example.todoapp.application.Responses.Response;

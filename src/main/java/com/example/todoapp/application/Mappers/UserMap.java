@@ -1,7 +1,7 @@
 package com.example.todoapp.application.Mappers;
 
 import com.example.todoapp.application.Responses.User.UserResponse;
-import com.example.todoapp.application.UseCases.User.CreateUser.CreateUserCommand;
+import com.example.todoapp.application.UseCases.Users.CreateUser.CreateUserCommand;
 import com.example.todoapp.domain.models.User;
 
 public class UserMap {
@@ -12,11 +12,13 @@ public class UserMap {
      */
     public static User mapUser(CreateUserCommand user){
         return new User(
-                user.getUsername(),
                 user.getEmail(),
                 user.getName(),
                 user.getLastName(),
-                user.getBornDate());
+                user.getBornDate(),
+                user.getPhoneNumber()
+                );
+        //String email, String name, String lastName, Date bornDate, String phoneNumber
     }
 
     /**
@@ -27,9 +29,11 @@ public class UserMap {
     public static UserResponse mapUserResponse(User user){
         return new UserResponse(
                 user.getId(),
-                user.getUsername(),
+                user.getName(),
                 user.getEmail(),
                 user.getLastName(),
-                user.getBornDate());
+                user.getBornDate(),
+                user.getPhoneNumber()
+        );
     }
 }
