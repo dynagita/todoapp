@@ -1,5 +1,6 @@
 package com.example.todoapp.application.Responses.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -8,10 +9,10 @@ public class UserResponse {
     private String name;
     private String email;
     private String lastName;
-    private Date bornDate;
+    private LocalDate bornDate;
     private String phoneNumber;
 
-    public UserResponse(UUID id, String name, String email, String lastName, Date bornDate, String phoneNumber) {
+    public UserResponse(UUID id, String name, String email, String lastName, LocalDate bornDate, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -36,7 +37,7 @@ public class UserResponse {
         return lastName;
     }
 
-    public Date getBornDate() {
+    public LocalDate getBornDate() {
         return bornDate;
     }
 

@@ -1,4 +1,4 @@
-package com.example.todoapp.application.UseCases.Users.GetUserById;
+package com.example.todoapp.application.Requests.Users;
 
 import com.example.todoapp.Utils.Mediator.Interfaces.Queries.IQuery;
 

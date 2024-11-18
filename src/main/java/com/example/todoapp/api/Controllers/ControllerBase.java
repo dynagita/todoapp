@@ -1,4 +1,4 @@
-package com.example.todoapp.api.controllers;
+package com.example.todoapp.api.Controllers;
 
 import com.example.todoapp.Utils.Mediator.Interfaces.IMediator;
 import com.example.todoapp.Utils.Mediator.Interfaces.IMediatorInitializer;

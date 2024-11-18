@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This is a class for normalizing API's response.
@@ -151,7 +152,18 @@ public class Response<T> {
         response.setStatus(ResponseStatus.ERROR);
         List<ErrorDetail> details = new ArrayList<>();
         details.add(new ErrorDetail("N/A", Messages.INTERNAL_SERVER_ERROR));
-        response.CreateError(ErrorResponseCodes.BUSINESS_VALIDATION, details);
+        response.CreateError(ErrorResponseCodes.INTERNAL_ERROR, details);
+        return response;
+    }
+
+    public static Response ProduceNotFoundResult(UUID id){
+        Response response = new Response();
+        response.setMessage(Messages.NOT_FOUND);
+        response.setStatus(ResponseStatus.NOT_FOUND);
+        List<ErrorDetail> details = new ArrayList<>();
+        details.add(new ErrorDetail("N/A", Messages.NOT_FOUND));
+        details.add(new ErrorDetail("id", id.toString()));
+        response.CreateError(ErrorResponseCodes.NOT_FOUND, details);
         return response;
     }
 }

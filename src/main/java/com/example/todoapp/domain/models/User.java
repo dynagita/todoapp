@@ -1,6 +1,8 @@
 package com.example.todoapp.domain.models;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +15,7 @@ public class User extends EntityBase{
     private String email;
     private String name;
     private String lastName;
-    private Date bornDate;
+    private LocalDate bornDate;
     private String phoneNumber;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> userTasks;
@@ -24,7 +26,7 @@ public class User extends EntityBase{
         userTasks = new ArrayList<Task>();
     }
 
-    public User(String email, String name, String lastName, Date bornDate, String phoneNumber) {
+    public User(String email, String name, String lastName, LocalDate bornDate, String phoneNumber) {
         this();
         this.email = email;
         this.name = name;
@@ -33,7 +35,7 @@ public class User extends EntityBase{
         this.phoneNumber = phoneNumber;
     }
 
-    public User(UUID id, String email, String name, String lastName, Date bornDate, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(UUID id, String email, String name, String lastName, LocalDate bornDate, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this(email, name, lastName, bornDate, phoneNumber);
         setId(id);
         setUpdatedAt(updatedAt);
@@ -52,7 +54,7 @@ public class User extends EntityBase{
         return lastName;
     }
 
-    public Date getBornDate() {
+    public LocalDate getBornDate() {
         return bornDate;
     }
 

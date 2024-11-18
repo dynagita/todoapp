@@ -1,4 +1,5 @@
-package com.example.todoapp.api.filters;
+package com.example.todoapp.api.Middlewares;
+import com.example.todoapp.application.Responses.Response;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -7,20 +8,19 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.UUID;
+
+@Component
 public class RequestFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-
-        String customHeader = httpRequest.getHeader("X-Custom-Header");
-        if (customHeader == null || customHeader.isBlank()) {
-            httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

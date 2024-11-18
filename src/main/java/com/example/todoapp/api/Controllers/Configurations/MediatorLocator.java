@@ -1,11 +1,11 @@
-package com.example.todoapp.api.controllers.Configurations;
+package com.example.todoapp.api.Controllers.Configurations;
 
 import com.example.todoapp.Utils.Mediator.Interfaces.IMediator;
 import com.example.todoapp.Utils.Mediator.impl.MediatorInitializer;
 import com.example.todoapp.Utils.Mediator.impl.MediatorRegister;
-import com.example.todoapp.application.UseCases.Users.CreateUser.CreateUserCommand;
+import com.example.todoapp.application.Requests.Users.CreateUserCommand;
 import com.example.todoapp.application.UseCases.Users.CreateUser.ICreateUserUseCase;
-import com.example.todoapp.application.UseCases.Users.GetUserById.GetUserByIdQuery;
+import com.example.todoapp.application.Requests.Users.GetUserByIdQuery;
 import com.example.todoapp.application.UseCases.Users.GetUserById.IGetUserByIdUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

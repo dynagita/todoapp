@@ -1,7 +1,7 @@
 package com.example.todoapp.application.Mappers;
 
 import com.example.todoapp.application.Responses.User.UserResponse;
-import com.example.todoapp.application.UseCases.Users.CreateUser.CreateUserCommand;
+import com.example.todoapp.application.Requests.Users.CreateUserCommand;
 import com.example.todoapp.domain.models.User;
 
 public class UserMap {
