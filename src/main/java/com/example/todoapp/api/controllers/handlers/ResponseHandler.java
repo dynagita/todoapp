@@ -1,7 +1,7 @@
 package com.example.todoapp.api.controllers.handlers;
 
-import com.example.todoapp.utils.constants.ErrorResponseCodes;
-import com.example.todoapp.application.responses.Response;
+import com.example.todoapp.borders.utils.constants.ErrorResponseCodes;
+import com.example.todoapp.borders.responses.Response;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,12 +50,14 @@ public class ResponseHandler implements ResponseBodyAdvice<Object> {
                                   MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
         var data = (Response) body;
-        var errorCode = data.getError().getCode();
-        if (errorCode.equals(ErrorResponseCodes.NOT_FOUND)) {
-            response.setStatusCode(HttpStatus.NOT_FOUND);
-        }
-        else if (errorCode.equals(ErrorResponseCodes.BUSINESS_VALIDATION)) {
-            response.setStatusCode(HttpStatus.UNPROCESSABLE_ENTITY);
+        if(data.hasError()){
+            var errorCode = data.getError().getCode();
+            if (errorCode.equals(ErrorResponseCodes.NOT_FOUND)) {
+                response.setStatusCode(HttpStatus.NOT_FOUND);
+            }
+            else if (errorCode.equals(ErrorResponseCodes.BUSINESS_VALIDATION)) {
+                response.setStatusCode(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
         }
         return body;
     }

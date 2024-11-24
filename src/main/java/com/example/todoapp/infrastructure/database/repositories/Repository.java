@@ -1,14 +1,16 @@
 package com.example.todoapp.infrastructure.database.repositories;
 
-import com.example.todoapp.domain.models.EntityBase;
+import br.com.fluentvalidator.predicate.PredicateBuilder;
+import com.example.todoapp.borders.models.EntityBase;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import com.example.todoapp.domain.repositories.IRepository;
+import com.example.todoapp.borders.repositories.IRepository;
 import jakarta.persistence.SynchronizationType;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,16 +64,39 @@ public class Repository<T extends EntityBase> implements IRepository<T> {
 
     /**
      * Search
-     * @param predicate dynamic filter for finding registers needed
+     * @param filters dynamic filter for finding registers needed, key should be entity attributeName
      * @return Collection
      */
     @Override
-    public List<T> search(Predicate predicate) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = cb.createQuery(entityClass);
+    public List<T> search(HashMap<String, Object> filters, int skip, int take) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+
         Root<T> root = criteriaQuery.from(entityClass);
-        criteriaQuery.where(predicate);
+
+        Predicate predicate = null;
+        if(filters != null && filters.size() > 0){
+            for(var filter : filters.entrySet()){
+                if(predicate == null)
+                    predicate = criteriaBuilder.equal(root.get(filter.getKey()), filter.getValue());
+                else
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get(filter.getKey()), filter.getValue()));
+            }
+            filters.forEach((key, value) ->{
+
+            });
+        }
+
+        criteriaQuery.select(root).orderBy(criteriaBuilder.desc(root.get("id")));
+        if(predicate != null){
+            criteriaQuery.where(predicate);
+        }
+
         TypedQuery<T> tpQuery = entityManager.createQuery(criteriaQuery);
+        tpQuery.setFirstResult(skip);
+        tpQuery.setMaxResults(take);
+
+
         return tpQuery.getResultList();
     }
 

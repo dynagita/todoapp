@@ -1,7 +1,7 @@
 package com.example.todoapp.infrastructure.database.repositories;
 
-import com.example.todoapp.domain.models.Task;
-import com.example.todoapp.domain.repositories.ITaskRepository;
+import com.example.todoapp.borders.models.Task;
+import com.example.todoapp.borders.repositories.ITaskRepository;
 
 /**
  * Task repository

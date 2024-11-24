@@ -1,7 +1,7 @@
 package com.example.todoapp.api.controllers.handlers;
 
-import com.example.todoapp.application.responses.ErrorDetail;
-import com.example.todoapp.application.responses.Response;
+import com.example.todoapp.borders.responses.ErrorDetail;
+import com.example.todoapp.borders.responses.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

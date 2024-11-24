@@ -1,19 +1,17 @@
 package com.example.todoapp.api.controllers;
 
-import com.example.todoapp.application.requests.tasks.CreateTaskCommand;
-import com.example.todoapp.application.requests.tasks.ListTaksQuery;
-import com.example.todoapp.application.responses.tasks.TaskResponse;
-import com.example.todoapp.utils.mediator.interfaces.IMediator;
-import com.example.todoapp.application.responses.Response;
-import com.example.todoapp.application.requests.users.CreateUserCommand;
-import com.example.todoapp.application.requests.users.GetUserByIdQuery;
-import com.example.todoapp.utils.constants.Messages;
-import com.example.todoapp.application.responses.user.UserResponse;
+import com.example.todoapp.borders.requests.tasks.CreateTaskCommand;
+import com.example.todoapp.borders.requests.tasks.ListTasksByUserQuery;
+import com.example.todoapp.borders.responses.tasks.TaskResponse;
+import com.example.todoapp.borders.utils.mediator.interfaces.IMediator;
+import com.example.todoapp.borders.responses.Response;
+import com.example.todoapp.borders.requests.users.CreateUserCommand;
+import com.example.todoapp.borders.requests.users.GetUserByIdQuery;
+import com.example.todoapp.borders.utils.constants.Messages;
+import com.example.todoapp.borders.responses.user.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import jdk.jfr.ContentType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,19 +90,19 @@ public class UsersController {
 
     /**
      * Method who allows list User's tasks
-     * @param id
-     * @return
+     * @param query
+     *      * @return
      */
-    @Operation(summary = "Get user's tasks",
+    @Operation(summary = "Get user's tasks. Default take: 25. Limit take: 100",
             responses = {
                     @ApiResponse(responseCode = "200", description = Messages.SUCCESS_MESSAGE, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "422", description = Messages.ERROR_BUSINESS_VALIDATION, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "500", description = Messages.INTERNAL_SERVER_ERROR, useReturnTypeSchema = true),
             })
-    @GetMapping("{id}/tasks")
-    public CompletableFuture<ResponseEntity<Response<List<TaskResponse>>>> listTasks(@PathVariable UUID id) {
+    @GetMapping("{userid}/tasks")
+    public CompletableFuture<ResponseEntity<Response<List<TaskResponse>>>> listTasks(ListTasksByUserQuery query) {
 
-        var response = (Response<List<TaskResponse>>) mediator.sendAsync(new ListTaksQuery(id)).join();
+        var response = (Response<List<TaskResponse>>) mediator.sendAsync(query).join();
         return CompletableFuture.supplyAsync(()-> ResponseEntity.ok(response));
     }
 }

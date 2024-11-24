@@ -1,7 +1,7 @@
 package com.example.todoapp.infrastructure.database.repositories;
 
-import com.example.todoapp.domain.models.User;
-import com.example.todoapp.domain.repositories.IUserRepository;
+import com.example.todoapp.borders.models.User;
+import com.example.todoapp.borders.repositories.IUserRepository;
 
 /**
  * User repository
