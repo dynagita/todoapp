@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+      - MYSQL_DATABASE=todoapp
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      to-do-app: {}
+  phpadmin:
+    image: phpmyadmin:latest
+    container_name: phpadmin
+    links:
+      - mysql
+    ports:
+      - 8085:80
+    depends_on:
+      - mysql
+    environment:
+      - PMA_HOST=mysql
+      - MYSQL_ROOT_PASSWORD=mysql
+    networks:
+      to-do-app: {}
+networks:
+  to-do-app:
+    driver: bridge

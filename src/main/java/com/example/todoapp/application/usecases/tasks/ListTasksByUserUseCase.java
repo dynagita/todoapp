@@ -27,7 +27,6 @@ public class ListTasksByUserUseCase implements IListTasksByUserUseCase {
     @Override
     public CompletableFuture<Response<List<TaskResponse>>> handle(ListTasksByUserQuery query) {
         return CompletableFuture.supplyAsync(()->{
-            var response = new Response<List<TaskResponse>>();
 
             var user = userRepository.findById(query.getUserId());
             if(user == null) {

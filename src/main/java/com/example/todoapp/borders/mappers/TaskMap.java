@@ -41,7 +41,13 @@ public class TaskMap {
         return new DetailedTaskResponse(task);
     }
 
+    /**
+     * Map a task request and a user to a new task
+     * @param task
+     * @param user
+     * @return
+     */
     public static Task mapTask(CreateTaskCommand task, User user){
-        return new Task();
+        return new Task(task.getTitle(), task.getDescription(), user, task.getExpectedCloseDate());
     }
 }

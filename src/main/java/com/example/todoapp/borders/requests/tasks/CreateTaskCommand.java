@@ -2,6 +2,9 @@ package com.example.todoapp.borders.requests.tasks;
 import com.example.todoapp.borders.utils.mediator.interfaces.commands.ICommand;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import com.example.todoapp.borders.utils.constants.Messages;
 
@@ -15,6 +18,7 @@ public class CreateTaskCommand implements ICommand {
     private String description;
     @JsonIgnore
     private UUID userID;
+    private LocalDateTime expectedCloseDate;
 
     /**
      * Create a new CreateTaskCommand
@@ -24,9 +28,10 @@ public class CreateTaskCommand implements ICommand {
     /**
      * Create a new CreateTaskCommand
      */
-    public CreateTaskCommand(String title, String description) {
+    public CreateTaskCommand(String title, String description, LocalDateTime expectedCloseDate) {
         this.title = title;
         this.description = description;
+        this.expectedCloseDate = expectedCloseDate;
     }
 
     /**
@@ -59,5 +64,13 @@ public class CreateTaskCommand implements ICommand {
      */
     public void setUserID(UUID userID) {
         this.userID = userID;
+    }
+
+    /**
+     * Get expected close date
+     * @return
+     */
+    public LocalDateTime getExpectedCloseDate() {
+        return expectedCloseDate;
     }
 }

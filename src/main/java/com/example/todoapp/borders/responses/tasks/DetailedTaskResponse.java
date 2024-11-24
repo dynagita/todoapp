@@ -4,6 +4,7 @@ import com.example.todoapp.borders.mappers.UserMap;
 import com.example.todoapp.borders.models.Task;
 import com.example.todoapp.borders.responses.user.UserResponse;
 import com.example.todoapp.borders.utils.enums.TaskStatus;
+
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,8 @@ public class DetailedTaskResponse {
     private TaskStatus status;
     private UserResponse user;
     private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    private LocalDateTime expectedCloseDate;
+    private LocalDateTime actualCloseDate;
 
     /**
      * Allow create a new detailed task response
@@ -24,15 +26,16 @@ public class DetailedTaskResponse {
      * @param status
      * @param user
      * @param createdDate
-     * @param updatedDate
+     * @param expectedCloseDate
      */
-    public DetailedTaskResponse(String title, String description, TaskStatus status, UserResponse user, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public DetailedTaskResponse(String title, String description, TaskStatus status, UserResponse user, LocalDateTime createdDate, LocalDateTime expectedCloseDate, LocalDateTime actualCloseDate) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.user = user;
         this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
+        this.expectedCloseDate = expectedCloseDate;
+        this.actualCloseDate = actualCloseDate;
     }
 
     /**
@@ -45,7 +48,8 @@ public class DetailedTaskResponse {
         this.status = task.getStatus();
         this.user = UserMap.mapUserResponse(task.getUser());
         this.createdDate = task.getCreatedAt();
-        this.updatedDate = task.getUpdatedAt();
+        this.expectedCloseDate = task.getExpectedCloseDate();
+        this.actualCloseDate = task.getActualCloseDate();
     }
 
     /**
@@ -89,10 +93,18 @@ public class DetailedTaskResponse {
     }
 
     /**
-     * Get updated date
+     * Get expected close date
      * @return
      */
-    public LocalDateTime getUpdatedDate() {
-        return updatedDate;
+    public LocalDateTime getExpectedCloseDate() {
+        return expectedCloseDate;
+    }
+
+    /**
+     * Get actual close date
+     * @return
+     */
+    public LocalDateTime getActualCloseDate() {
+        return actualCloseDate;
     }
 }

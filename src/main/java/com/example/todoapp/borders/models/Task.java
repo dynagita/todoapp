@@ -13,11 +13,14 @@ import java.util.UUID;
 public class Task extends EntityBase{
     @Column(nullable = false)
     private String title;
+    @Column(nullable = false, length = 5000)
     private String description;
     private TaskStatus status;
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+    LocalDateTime expectedCloseDate;
+    LocalDateTime actualCloseDate;
 
     /**
      * Create a new task
@@ -32,12 +35,13 @@ public class Task extends EntityBase{
      * @param description
      * @param user
      */
-    public Task(String title, String description, User user) {
+    public Task(String title, String description, User user, LocalDateTime expectedCloseDate) {
         this();
         this.title = title;
         this.description = description;
-        this.status = status;
         this.user = user;
+        this.status = TaskStatus.CREATED;
+        this.expectedCloseDate = expectedCloseDate;
     }
 
     /**
@@ -50,7 +54,7 @@ public class Task extends EntityBase{
      * @param createdAt
      * @param updatedAt
      */
-    public Task(UUID id, String title, String description, TaskStatus status, User user, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Task(UUID id, String title, String description, TaskStatus status, User user, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime expectedCloseDate, LocalDateTime actualCloseDate) {
         setId(id);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
@@ -58,6 +62,8 @@ public class Task extends EntityBase{
         this.description = description;
         this.status = status;
         this.user = user;
+        this.expectedCloseDate = expectedCloseDate;
+        this.actualCloseDate = actualCloseDate;
     }
 
     /**
@@ -114,5 +120,21 @@ public class Task extends EntityBase{
      */
     public User getUser() {
         return user;
+    }
+
+    /**
+     * Get expected close date
+     * @return
+     */
+    public LocalDateTime getExpectedCloseDate(){
+        return expectedCloseDate;
+    }
+
+    /**
+     * Get actual close date
+     * @return
+     */
+    public LocalDateTime getActualCloseDate(){
+        return actualCloseDate;
     }
 }
