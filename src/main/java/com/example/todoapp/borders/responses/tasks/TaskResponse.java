@@ -6,11 +6,13 @@ import net.bytebuddy.asm.Advice;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Task response object
  */
 public class TaskResponse {
+    private UUID id;
     private String title;
     private String description;
     private TaskStatus status;
@@ -23,6 +25,7 @@ public class TaskResponse {
      * @param task
      */
     public TaskResponse(Task task){
+        this.id = task.getId();
         this.title = task.getTitle();
         this.description = String.format("%s...", task.getDescription().substring(0, Limitations.TASK_SUMMARY_LIMIT));
         this.status = task.getStatus();
@@ -77,5 +80,13 @@ public class TaskResponse {
      */
     public LocalDateTime getActualCloseDate() {
         return actualCloseDate;
+    }
+
+    /**
+     * Get id
+     * @return
+     */
+    public UUID getId() {
+        return id;
     }
 }

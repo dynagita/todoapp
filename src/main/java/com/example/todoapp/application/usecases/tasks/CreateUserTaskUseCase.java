@@ -1,8 +1,8 @@
 package com.example.todoapp.application.usecases.tasks;
 
+import com.example.todoapp.application.usecases.CommandHandlerBaseUseCase;
 import com.example.todoapp.borders.mappers.TaskMap;
-import com.example.todoapp.borders.repositories.ITaskRepository;
-import com.example.todoapp.borders.repositories.IUserRepository;
+import com.example.todoapp.borders.repositories.IUnityOfWork;
 import com.example.todoapp.borders.requests.tasks.CreateTaskCommand;
 import com.example.todoapp.borders.responses.Response;
 import com.example.todoapp.borders.responses.tasks.DetailedTaskResponse;
@@ -10,30 +10,35 @@ import com.example.todoapp.borders.usecases.tasks.ICreateUserTaskUseCase;
 import com.example.todoapp.borders.utils.constants.Messages;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.CompletableFuture;
-
+/**
+ * Use case for creating a new user task
+ */
 @Service
-public class CreateUserTaskUseCase implements ICreateUserTaskUseCase {
+public class CreateUserTaskUseCase extends CommandHandlerBaseUseCase<CreateTaskCommand, DetailedTaskResponse> implements ICreateUserTaskUseCase {
 
-    private final IUserRepository userRepository;
-    private final ITaskRepository taskRepository;
+    private final IUnityOfWork uow;
 
-    public CreateUserTaskUseCase(IUserRepository userRepository, ITaskRepository taskRepository) {
-        this.userRepository = userRepository;
-        this.taskRepository = taskRepository;
+    /**
+     * Create a new CreateUserTaskUseCase
+     * @param uow
+     */
+    public CreateUserTaskUseCase(IUnityOfWork uow) {
+        this.uow = uow;
     }
+
+    /**
+     * Handle use case logic
+     * @param command
+     * @return
+     */
     @Override
-    public CompletableFuture<Response<DetailedTaskResponse>> handle(CreateTaskCommand query) {
-        return CompletableFuture.supplyAsync(()->{
-            var user = userRepository.findById(query.getUserID());
-            if(user == null) {
-                return Response.ProduceNotFoundResult("user", Messages.NOT_FOUND);
-            }
-            var task = TaskMap.mapTask(query, user);
-
-            taskRepository.save(task);
-
-            return Response.ProduceSuccessResult(TaskMap.mapTaskResponse(task));
-        });
+    public Response<DetailedTaskResponse> handleCommand(CreateTaskCommand command) {
+        var user = uow.getUserRepository().findById(command.getUserID());
+        if(user == null) {
+            return Response.<DetailedTaskResponse>ProduceNotFoundResult("user", Messages.NOT_FOUND);
+        }
+        var task = TaskMap.mapTask(command, user);
+        uow.getTaskRepository().save(task);
+        return Response.<DetailedTaskResponse>ProduceSuccessResult(TaskMap.mapDetailedTaskResponse(task));
     }
 }

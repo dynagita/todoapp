@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +26,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Response> handleValidationException(ConstraintViolationException ex) {
+
         List<String> errors = ex.getConstraintViolations().stream()
                 .map(violation -> violation.getMessage())
                 .collect(Collectors.toList());
@@ -47,11 +47,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+
         List<ErrorDetail> errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> new ErrorDetail(fieldError.getField(), fieldError.getDefaultMessage()))  // Including field name
+                .map(fieldError -> new ErrorDetail(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
-
-
 
         var response = Response.<String>ProducessBadRequestResult(errors);
 
@@ -66,10 +65,7 @@ public class GlobalExceptionHandler {
     // Handle generic exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response> handleGenericException(Exception ex) {
-        /*
-                //Loggin
-                List.of(ex.getMessage())
-        */
+
         if(ex.getClass() == HttpMessageNotReadableException.class){
             var details = new ArrayList<ErrorDetail>();
             details.add(new ErrorDetail("N/A", ex.getMessage()));

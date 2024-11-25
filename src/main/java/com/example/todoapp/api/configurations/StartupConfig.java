@@ -2,7 +2,9 @@ package com.example.todoapp.api.configurations;
 
 import com.example.todoapp.application.usecases.tasks.CreateUserTaskUseCase;
 import com.example.todoapp.borders.requests.tasks.CreateTaskCommand;
+import com.example.todoapp.borders.requests.tasks.GetTaskByIdQuery;
 import com.example.todoapp.borders.requests.tasks.ListTasksByUserQuery;
+import com.example.todoapp.borders.usecases.tasks.IGetTaskByIdUseCase;
 import com.example.todoapp.borders.usecases.tasks.IListTasksByUserUseCase;
 import com.example.todoapp.borders.utils.mediator.impl.Mediator;
 import com.example.todoapp.borders.utils.mediator.impl.MediatorRegister;
@@ -30,6 +32,7 @@ public class StartupConfig {
             registers.add(new MediatorRegister(GetUserByIdQuery.class, IGetUserByIdUseCase.class));
             registers.add(new MediatorRegister(ListTasksByUserQuery.class, IListTasksByUserUseCase.class));
             registers.add(new MediatorRegister(CreateTaskCommand.class, CreateUserTaskUseCase.class));
+            registers.add(new MediatorRegister(GetTaskByIdQuery.class, IGetTaskByIdUseCase.class));
             registers.forEach(register ->{
                 Mediator.registerHandler(register);
             });

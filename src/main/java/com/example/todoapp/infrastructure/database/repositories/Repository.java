@@ -2,11 +2,8 @@ package com.example.todoapp.infrastructure.database.repositories;
 
 import br.com.fluentvalidator.predicate.PredicateBuilder;
 import com.example.todoapp.borders.models.EntityBase;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.*;
 import com.example.todoapp.borders.repositories.IRepository;
-import jakarta.persistence.SynchronizationType;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 
@@ -28,13 +25,14 @@ public class Repository<T extends EntityBase> implements IRepository<T> {
     /**
      * Create a new repository
      */
-    public Repository(){}
+    public Repository() {
+    }
 
     /**
      * Create a new repository
      * @param entityClass
      */
-    public Repository(Class<T> entityClass){
+    public Repository(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -44,6 +42,7 @@ public class Repository<T extends EntityBase> implements IRepository<T> {
      * @return
      */
     @Override
+    @Transactional
     public T findById(UUID id) {
         return  entityManager.find(entityClass, id);
     }
@@ -54,6 +53,7 @@ public class Repository<T extends EntityBase> implements IRepository<T> {
      * @return
      */
     @Override
+    @Transactional
     public T find(Predicate predicate) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = cb.createQuery(entityClass);
@@ -68,6 +68,7 @@ public class Repository<T extends EntityBase> implements IRepository<T> {
      * @return Collection
      */
     @Override
+    @Transactional
     public List<T> search(HashMap<String, Object> filters, int skip, int take) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);

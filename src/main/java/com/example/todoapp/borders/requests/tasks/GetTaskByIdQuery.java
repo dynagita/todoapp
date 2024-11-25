@@ -8,7 +8,8 @@ import java.util.UUID;
  * Query for searching a task by ID
  */
 public class GetTaskByIdQuery implements IQuery {
-    private UUID id;
+    private UUID userId;
+    private UUID taskId;
 
     /**
      * Create new GetTaskByIdQuery
@@ -19,15 +20,24 @@ public class GetTaskByIdQuery implements IQuery {
     /**
      * Create new GetTaskByIdQuery
      */
-    public GetTaskByIdQuery(UUID id) {
-        this.id = id;
+    public GetTaskByIdQuery(UUID userId, UUID taskId) {
+        this.userId = userId;
+        this.taskId = taskId;
     }
 
     /**
-     * Get id
+     * Get user id
      * @return
      */
-    public UUID getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
+    }
+
+    /**
+     * Get task id
+     * @return
+     */
+    public UUID getTaskId() {
+        return taskId;
     }
 }

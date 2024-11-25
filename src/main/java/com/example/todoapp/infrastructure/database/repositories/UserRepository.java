@@ -2,6 +2,7 @@ package com.example.todoapp.infrastructure.database.repositories;
 
 import com.example.todoapp.borders.models.User;
 import com.example.todoapp.borders.repositories.IUserRepository;
+import jakarta.persistence.EntityManager;
 
 /**
  * User repository

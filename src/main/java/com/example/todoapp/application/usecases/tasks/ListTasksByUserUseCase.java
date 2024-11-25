@@ -1,46 +1,50 @@
 package com.example.todoapp.application.usecases.tasks;
 
+import com.example.todoapp.application.usecases.QueryHandlerBaseUseCase;
 import com.example.todoapp.borders.mappers.TaskMap;
-import com.example.todoapp.borders.repositories.ITaskRepository;
-import com.example.todoapp.borders.repositories.IUserRepository;
+import com.example.todoapp.borders.repositories.IUnityOfWork;
 import com.example.todoapp.borders.requests.tasks.ListTasksByUserQuery;
 import com.example.todoapp.borders.responses.Response;
 import com.example.todoapp.borders.responses.tasks.TaskResponse;
 import com.example.todoapp.borders.usecases.tasks.IListTasksByUserUseCase;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
+/**
+ * Use case for query user's tasks
+ */
 @Service
-public class ListTasksByUserUseCase implements IListTasksByUserUseCase {
+public class ListTasksByUserUseCase extends QueryHandlerBaseUseCase<ListTasksByUserQuery, List<TaskResponse>> implements IListTasksByUserUseCase {
 
-    private final ITaskRepository taskRepository;
-    private final IUserRepository userRepository;
+    private final IUnityOfWork uow;
 
-    public ListTasksByUserUseCase(ITaskRepository repository, IUserRepository userRepository) {
-        this.taskRepository = repository;
-        this.userRepository = userRepository;
+    /**
+     * Create a new ListTasksUserUseCase
+     * @param uow
+     */
+    public ListTasksByUserUseCase(IUnityOfWork uow) {
+        this.uow = uow;
     }
 
+
+    /**
+     * Handle use case logic
+     * @param query
+     * @return
+     */
     @Override
-    public CompletableFuture<Response<List<TaskResponse>>> handle(ListTasksByUserQuery query) {
-        return CompletableFuture.supplyAsync(()->{
+    public Response<List<TaskResponse>> handleQuery(ListTasksByUserQuery query) {
+        var user = uow.getUserRepository().findById(query.getUserId());
+        if(user == null) {
+            return Response.<List<TaskResponse>>ProduceNotFoundResult("user", query.getUserId().toString());
+        }
 
-            var user = userRepository.findById(query.getUserId());
-            if(user == null) {
-                return Response.ProduceNotFoundResult("user", query.getUserId().toString());
-            }
+        var filter = new HashMap<String, Object>();
+        filter.put("user", user);
 
-            var filter = new HashMap<String, Object>();
-            filter.put("user", user);
+        var result = uow.getTaskRepository().search(filter, query.getSkip(), query.getTake());
 
-            var result = taskRepository.search(filter, query.getSkip(), query.getTake());
-
-            return Response.ProduceSuccessResult(TaskMap.mapTaskResponse(result));
-        });
+        return Response.<List<TaskResponse>>ProduceSuccessResult(TaskMap.mapTaskResponse(result));
     }
-
-
 }

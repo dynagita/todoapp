@@ -6,11 +6,13 @@ import com.example.todoapp.borders.responses.user.UserResponse;
 import com.example.todoapp.borders.utils.enums.TaskStatus;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Detailed task response
  */
 public class DetailedTaskResponse {
+    private UUID id;
     private String title;
     private String description;
     private TaskStatus status;
@@ -21,6 +23,7 @@ public class DetailedTaskResponse {
 
     /**
      * Allow create a new detailed task response
+     * @param id
      * @param title
      * @param description
      * @param status
@@ -28,7 +31,8 @@ public class DetailedTaskResponse {
      * @param createdDate
      * @param expectedCloseDate
      */
-    public DetailedTaskResponse(String title, String description, TaskStatus status, UserResponse user, LocalDateTime createdDate, LocalDateTime expectedCloseDate, LocalDateTime actualCloseDate) {
+    public DetailedTaskResponse(UUID id, String title, String description, TaskStatus status, UserResponse user, LocalDateTime createdDate, LocalDateTime expectedCloseDate, LocalDateTime actualCloseDate) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
@@ -43,6 +47,7 @@ public class DetailedTaskResponse {
      * @param task
      */
     public DetailedTaskResponse(Task task) {
+        this.id = task.getId();
         this.title = task.getTitle();
         this.description = task.getDescription();
         this.status = task.getStatus();
@@ -106,5 +111,13 @@ public class DetailedTaskResponse {
      */
     public LocalDateTime getActualCloseDate() {
         return actualCloseDate;
+    }
+
+    /**
+     * Get id
+     * @return
+     */
+    public UUID getId() {
+        return id;
     }
 }
