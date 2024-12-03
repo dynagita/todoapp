@@ -27,7 +27,8 @@ public class TaskResponse {
     public TaskResponse(Task task){
         this.id = task.getId();
         this.title = task.getTitle();
-        this.description = String.format("%s...", task.getDescription().substring(0, Limitations.TASK_SUMMARY_LIMIT));
+        var description = task.getDescription();
+        this.description = String.format("%s...", task.getDescription().substring(0, description.length() > Limitations.TASK_SUMMARY_LIMIT ? Limitations.TASK_SUMMARY_LIMIT : description.length()));
         this.status = task.getStatus();
         createdAt = task.getCreatedAt();
         this.actualCloseDate = task.getActualCloseDate();

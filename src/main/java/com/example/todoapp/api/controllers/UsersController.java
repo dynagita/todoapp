@@ -43,6 +43,7 @@ public class UsersController {
             responses = {
                     @ApiResponse(responseCode = "200", description = Messages.SUCCESS_MESSAGE, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "400", description = Messages.ERROR_REQUEST_VALIDATION, useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "409", description = Messages.ERROR_CONFLICT, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "422", description = Messages.ERROR_BUSINESS_VALIDATION, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "500", description = Messages.INTERNAL_SERVER_ERROR, useReturnTypeSchema = true),
             })
@@ -85,6 +86,7 @@ public class UsersController {
                     @ApiResponse(responseCode = "200", description = Messages.SUCCESS_MESSAGE, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "400", description = Messages.ERROR_REQUEST_VALIDATION, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "404", description = Messages.NOT_FOUND, useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "409", description = Messages.ERROR_CONFLICT, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "422", description = Messages.ERROR_BUSINESS_VALIDATION, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "500", description = Messages.INTERNAL_SERVER_ERROR, useReturnTypeSchema = true),
             })

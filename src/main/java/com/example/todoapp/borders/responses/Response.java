@@ -157,7 +157,8 @@ public class Response<T> {
 
     /**
      * Produce a not found response
-     * @param id id not found searched
+     * @param field not found field searched
+     * @param value not found value searched
      * @return new Response for not found purpose
      */
     public static Response ProduceNotFoundResult(String field, String value){
@@ -167,6 +168,14 @@ public class Response<T> {
         List<ErrorDetail> details = new ArrayList<>();
         details.add(new ErrorDetail(field, Messages.NOT_FOUND));
         response.CreateError(ErrorResponseCodes.NOT_FOUND, details);
+        return response;
+    }
+
+    public static Response ProduceConflitResult(List<ErrorDetail> errorDetailList){
+        Response response = new Response();
+        response.setMessage(Messages.ERROR_CONFLICT);
+        response.setStatus(ResponseStatus.ERROR_CONFLICT);
+        response.CreateError(ErrorResponseCodes.ERROR_CONFLICT, errorDetailList);
         return response;
     }
 }

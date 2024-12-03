@@ -58,6 +58,9 @@ public class ResponseHandler implements ResponseBodyAdvice<Object> {
             else if (errorCode.equals(ErrorResponseCodes.BUSINESS_VALIDATION)) {
                 response.setStatusCode(HttpStatus.UNPROCESSABLE_ENTITY);
             }
+            else if(errorCode.equals(ErrorResponseCodes.ERROR_CONFLICT)){
+                response.setStatusCode(HttpStatus.CONFLICT);
+            }
         }
         return body;
     }

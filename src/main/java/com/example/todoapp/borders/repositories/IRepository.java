@@ -41,10 +41,10 @@ public interface IRepository<T extends EntityBase> {
 
     /**
      *
-     * @param predicate dynamic filters for finding register needed
+     * @param filters dynamic filters for finding register needed
      * @return T who you are find for. If there are more registers who are combined with your filter, this method is going to return the first element on collection finded.
      */
-    T find(Predicate predicate);
+    T find(HashMap<String, Object> filters);
 
     /**
      *

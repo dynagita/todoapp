@@ -7,6 +7,7 @@ public enum ResponseStatus {
     ERROR,
     SUCCESS,
     NOT_FOUND,
+    ERROR_CONFLICT,
     INTERNAL_SERVER_ERROR;
 
     public String getResponseStatus(){

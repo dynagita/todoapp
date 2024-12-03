@@ -49,17 +49,39 @@ public class Repository<T extends EntityBase> implements IRepository<T> {
 
     /**
      * Find a register by dynamic filter, user may create your own predicate filter
-     * @param predicate dynamic filters for finding register needed
+     * @param filters dynamic filters for finding register needed
      * @return
      */
     @Override
     @Transactional
-    public T find(Predicate predicate) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = cb.createQuery(entityClass);
-        criteriaQuery.where(predicate);
+    public T find(HashMap<String, Object> filters) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+
+        Root<T> root = criteriaQuery.from(entityClass);
+
+        Predicate predicate = null;
+        if(filters != null && filters.size() > 0){
+            for(var filter : filters.entrySet()){
+                if(predicate == null)
+                    predicate = criteriaBuilder.equal(root.get(filter.getKey()), filter.getValue());
+                else
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get(filter.getKey()), filter.getValue()));
+            }
+        }
+
+        criteriaQuery.select(root).orderBy(criteriaBuilder.desc(root.get("id")));
+        if(predicate != null){
+            criteriaQuery.where(predicate);
+        }
+
         TypedQuery<T> tpQuery = entityManager.createQuery(criteriaQuery);
-        return tpQuery.getSingleResult();
+
+        var response = tpQuery.getResultList();
+        if(response.isEmpty())
+            return null;
+
+        return response.getFirst();
     }
 
     /**
@@ -83,9 +105,6 @@ public class Repository<T extends EntityBase> implements IRepository<T> {
                 else
                     predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get(filter.getKey()), filter.getValue()));
             }
-            filters.forEach((key, value) ->{
-
-            });
         }
 
         criteriaQuery.select(root).orderBy(criteriaBuilder.desc(root.get("id")));

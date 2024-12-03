@@ -18,4 +18,5 @@ public class Messages {
     public static final String INVALID_DATE = "Invalid date format for 'value' in @DateBefore annotation. Use yyyy-MM-dd.";
     public static final String MAX_TAKE_LIMIT = "Maximum take limit exceeded.";
     public static final String MIN_TAKE_LIMIT = "Minimum take limit exceeded.";
+    public static final String ERROR_CONFLICT = "Not able to persist, register already exists.";
 }
