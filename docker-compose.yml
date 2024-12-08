@@ -8,15 +8,17 @@ services:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_USER=mysql
       - MYSQL_PASSWORD=mysql
-      - MYSQL_DATABASE=todoapp
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 5s
       retries: 3
       start_period: 30s
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
     networks:
       to-do-app: {}
+
   phpadmin:
     image: phpmyadmin:latest
     container_name: phpadmin
@@ -25,12 +27,39 @@ services:
     ports:
       - 8085:80
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
       - PMA_HOST=mysql
       - MYSQL_ROOT_PASSWORD=mysql
     networks:
       to-do-app: {}
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.3
+    container_name: keycloak
+    environment:
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://mysql:mysql@mysql:3306/keycloak
+      KEYCLOAK_ADMIN: keycloak
+      KEYCLOAK_ADMIN_PASSWORD: keycloak
+    command: ["start-dev"]
+    ports:
+      - 8082:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "--silent", "--max-time", "10", "http://localhost:8080/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    links:
+      - mysql
+    networks:
+      to-do-app: {}
+
 networks:
   to-do-app:
     driver: bridge
